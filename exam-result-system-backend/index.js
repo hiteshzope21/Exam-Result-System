@@ -10,7 +10,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 mongoose.connect(process.env.MONGO_URL, ()=>{
     console.log("MongoDB connected ");
-})
+});
+
+const indexRouter = require("./routes/user.routes");
+
+app.use( indexRouter );
 
 
 
