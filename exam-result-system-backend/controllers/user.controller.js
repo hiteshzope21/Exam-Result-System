@@ -30,9 +30,7 @@ const createUser =async ( req, res ) => {
             user: userAdded
         });
     }
-    catch (err) {
-
-        
+    catch (err) {  
         res.status(500).send({
             message: "Internal Server Error"
         })
