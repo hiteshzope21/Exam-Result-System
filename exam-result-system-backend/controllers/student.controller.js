@@ -1,6 +1,5 @@
 const Student = require("../models/user.model");
-// const Mark = require("../models/mark.model");
-// const Subject = require("../models/subject.model");
+
 
 /** Insert Student Record */
 exports.createStudentInfo = async (req, res) => {

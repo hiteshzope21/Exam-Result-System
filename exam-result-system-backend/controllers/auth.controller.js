@@ -1,5 +1,8 @@
-const User = require("../models/user.model");
+const Faculty = require("../models/faculty.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+
 
 /// Signup  
 
@@ -21,23 +24,21 @@ async function signup( req ,res ){
         name: req.body.name,
         password: bcrypt.hashSync(req.body.password, 8),
         email: req.body.email,
-        usertype: req.body.usertype,
         college : req.body.college
     }
 
     try {
-        const addedUser = await User.create( FacultyDetails );
+        const addedUser = await Faculty.create( FacultyDetails );
 
         const newFaculty = {
             name : addedUser.name,
             password : addedUser.password,
             email : addedUser.email,
-            usertype : addedUser.usertype,
+            userType : addedUser.userType,
             college : addedUser.college
         }
 
         res.status(201).send({
-            status : 201,
             message: `${ addedUser.name } , Added Successully !`,
             user: newFaculty
         });
@@ -50,6 +51,45 @@ async function signup( req ,res ){
     }
 }
 
+
+async function signin( req ,res ){ 
+
+    try {
+        var faculty = await Faculty.findOne({ email: req.body.email });
+    } catch (err) {
+        console.log(err.message);
+    }
+
+    if (faculty == null) {
+        return res.status(400).send("Faculty Doesn't Exist")
+    }
+
+
+    const checkPassword = bcrypt.compareSync(req.body.password, faculty.password);
+
+    if (!checkPassword) {
+        return res.status(401).send( "Password is not valid" );
+    }
+
+    // const token = jwt.sign({ id: user.userId }, config.secret, {
+    //     expiresIn: 600
+    // });
+    const token = jwt.sign({ id: faculty._id }, process.env.SECRET, {
+        expiresIn: '2h'
+    });
+
+    res.status(200).send({
+        message: `${ faculty.name } login Successfully !`,
+        Faculty: {
+            name: faculty.name,
+            email: faculty.email,
+            userType: faculty.userType,
+            JWTtoken: token
+        }
+    })
+}
+
 module.exports = {
-    signup
+    signup ,
+    signin
 }

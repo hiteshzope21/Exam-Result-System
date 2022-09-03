@@ -10,10 +10,7 @@ const studentSchema = new mongoose.Schema({
 
     fathername : {
         type : String,
-    },
-
-    password : {
-        type : String,
+        required : true,
     },
 
     email : {
@@ -26,30 +23,29 @@ const studentSchema = new mongoose.Schema({
 
     semester : {
         type : Number,
+        required : true,
+
     },
 
     enrollment : {
         type : String,
+        required : true,
         unique : true
     },
 
     course : {
         type : String,
+        required : true,
     },
     
     branch : {
         type : String,
-    },
-
-    usertype : {
-        type : String ,
         required : true,
-        default : 'STUDENT',
-        enum : ['STUDENT' , 'FACULTY']
     },
 
     mobile : {
         type : Number,
+        required : true,
     },
 
     college : {
@@ -57,46 +53,59 @@ const studentSchema = new mongoose.Schema({
         required : true,
     },
 
+    userType : {
+        type : String ,
+        default : 'STUDENT',
+    },
+
     subject01 : {
         type : String,
+        required : true,
     },
 
     subject02 : {
         type : String,
+        required : true,
     },
 
     subject03 : {
         type : String,
+        required : true,
     },
 
     subject04 : {
         type : String,
+        required : true,
     },
 
     subject05 : {
         type : String,
+        required : true,
     },
 
     marks01 : {
         type : Number,
+        required : true,
     },
 
     marks02 : {
         type : Number,
+        required : true,
     },
 
     marks03 : {
         type : Number,
+        required : true,
     },
 
     marks04 : {
         type : Number,
-       
+        required : true,
     },
 
     marks05 : {
         type : Number,
-       
+        required : true,
     },
 
 })
