@@ -2,7 +2,7 @@
  *  This file contains the Custom Middleewares
  */
 
-const User = require("../models/student.model");
+const User = require("../models/user.model");
 
 checkStudentInfoValidation = async (req, res, next) => {
   const data = req.body;
