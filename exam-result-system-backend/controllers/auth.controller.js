@@ -74,7 +74,9 @@ async function signin( req ,res ){
     // const token = jwt.sign({ id: user.userId }, config.secret, {
     //     expiresIn: 600
     // });
-    const token = jwt.sign({ id: faculty._id }, process.env.SECRET, {
+
+
+    const token = jwt.sign({ id: faculty.id }, process.env.SECRET, {
         expiresIn: '2h'
     });
 
