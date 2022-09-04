@@ -1,8 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-
-
-
 function isToken(req, res , next){
 
     const token = req.headers["accesstoken"];

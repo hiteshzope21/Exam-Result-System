@@ -27,10 +27,12 @@ mongoose.connect(process.env.MONGO_URL, ()=>{
 const indexRouter = require("./routes/user.routes");
 const studentRouter = require("./routes/student.routes");
 const authRoutes = require("./routes/auth.routes");
+const resultRouter = require("./routes/result.routes");
 
 app.use( authRoutes );
 app.use( indexRouter );
 app.use( studentRouter );
+app.use( resultRouter );
 
 
 

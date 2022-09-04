@@ -6,10 +6,10 @@ const router = express.Router();
 
 const checkToken = require("../middlewares/checkToken")
 
-router.post('/resultsystem/api/students/add' ,  [checkToken.isToken , validateStudentInfo.checkStudentInfoValidation ] ,  studentController.createStudentInfo);
-router.get('/resultsystem/api/students',   [checkToken.isToken] , studentController.getStudentDetails);
-router.get('/resultsystem/api/students/:id',  [checkToken.isToken] , studentController.getStudentByID);
-router.put('/resultsystem/api/students/:id',   [checkToken.isToken] , studentController.updateStudentByID);
-router.delete('/resultsystem/api/students/:id',   [checkToken.isToken] , studentController.deleteStudentByID);
+router.post('/resultsystem/api/students/add' ,  [ validateStudentInfo.checkStudentInfoValidation ] ,  studentController.createStudentInfo);
+router.get('/resultsystem/api/students',    studentController.getStudentDetails);
+router.get('/resultsystem/api/students/:id', studentController.getStudentByID);
+router.put('/resultsystem/api/students/:id',    studentController.updateStudentByID);
+router.delete('/resultsystem/api/students/:id',  studentController.deleteStudentByID);
 
 module.exports = router;

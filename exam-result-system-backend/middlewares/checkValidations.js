@@ -2,13 +2,13 @@
  *  This file contains the Custom Middleewares
  */
 
-const User = require("../models/user.model");
+const User = require("../models/student.model");
 
 checkIncomingRequest = async (req, res , next  ) => {
     
     const data = req.body;
 
-    /** validation for user Name  */
+    /** validation for Student Name  */
     if( !data.name ){
         return res.status(400).send({
             message : "Name is Not Provided !"
@@ -16,11 +16,11 @@ checkIncomingRequest = async (req, res , next  ) => {
     }
 
     /** Check if the email is present  */
-    const email = await User.findOne({email : req.body.email});
+    const email = await Student.findOne({email : req.body.email});
 
     if( email != null ){
         return res.status(400).send({
-            message : "User with Email already exist"
+            message : "Student with Email already exist"
         })
     }
 
@@ -30,7 +30,7 @@ checkIncomingRequest = async (req, res , next  ) => {
             message : "EmailID is Not Provided !"
         })
     }
-    /** validation for user Name  */
+    /** validation for Student Name  */
     if( !data.name ){
         return res.status(400).send({
             message : "Password is Not Provided !"
