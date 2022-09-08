@@ -61,14 +61,21 @@ async function signin( req ,res ){
     }
 
     if (faculty == null) {
-        return res.status(400).send("Faculty Doesn't Exist")
+        return res.status(400).send({
+            success : false,
+            message :"Faculty Doesn't Exist"
+
+        })
     }
 
 
     const checkPassword = bcrypt.compareSync(req.body.password, faculty.password);
 
     if (!checkPassword) {
-        return res.status(401).send( "Password is not valid" );
+        return res.status(401).send({
+            success : false,
+            message : "Password is not valid",
+        } );
     }
 
     // const token = jwt.sign({ id: user.userId }, config.secret, {
@@ -81,6 +88,7 @@ async function signin( req ,res ){
     });
 
     res.status(200).send({
+        success : true,
         message: `${ faculty.name } login Successfully !`,
         Faculty: {
             name: faculty.name,

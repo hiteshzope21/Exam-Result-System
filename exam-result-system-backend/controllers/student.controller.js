@@ -1,4 +1,5 @@
 const Student = require("../models/student.model");
+const Faculty = require("../models/faculty.model");
 
 
 /** Insert Student Record */
@@ -26,6 +27,8 @@ exports.createStudentInfo = async (req, res) => {
   };
 
   try {
+    const faculty = await Faculty.findOne({ _id : req.id });
+    StudentObj.studentCreatedBy = faculty.name;
     const student = await Student.create(StudentObj);
 
     const StudentInfoAdded = {
@@ -36,6 +39,7 @@ exports.createStudentInfo = async (req, res) => {
       enrollment: student.enrollment,
       course: student.course,
       branch: student.branch,
+      studentCreatedBy : student.studentCreatedBy,
       mobile: student.mobile,
       college: student.college,
       subject01: student.subject01,
@@ -49,6 +53,9 @@ exports.createStudentInfo = async (req, res) => {
       marks04: student.marks04,
       marks05: student.marks05,
     };
+
+    console.log(StudentObj.studentCreatedBy);
+    console.log(StudentObj);
 
     res.status(201).send({
       message: `${StudentInfoAdded.name} , Added Successully !`,
@@ -65,19 +72,32 @@ exports.createStudentInfo = async (req, res) => {
 /**Get All student Records */
 exports.getStudentDetails = async (req, res) => {
   try {
-    const studentsList = await Student.find();
+    const faculty = await Faculty.findOne({ _id : req.id })
+    const studentsList = await Student.find({ studentCreatedBy : faculty.name});
+
+
+
 
     if (!studentsList) {
       return res.status(200).send({
         message: "No Record Found !",
       });
     }
+console.log("Faculty : " , faculty.name);
+console.log("Students : ",studentsList);
 
-    return res.status(200).send({
-      message: "Student Fetched Successfully !",
-      TotalRecords: studentsList.length,
-      students: studentsList,
-    });
+    if( studentsList ){
+
+      return res.status(200).send({
+        message: "Student Fetched Successfully !",
+        TotalRecords: studentsList.length,
+        students: studentsList,
+      });
+    }else{
+      return res.status(400).send({
+        message: "Only faculty who created , can access the Record !",
+      });
+    }
   } catch (error) {
     console.log(error);
     return res.status(200).send({
@@ -224,42 +244,45 @@ exports.deleteStudentByID = async (req, res) => {
 exports.getResultByEnrollment = async (req, res) => {
 
   try{
-    var studentsData = await Student.findOne({ enrollment : req.body.enrollment });
+    const studentsData = await Student.findOne({ enrollment : req.params.enrollment });
     console.log( studentsData );
-  }catch(error){
-    console.log(error.message);
-  }
-
+  
   if( studentsData == null ){
     res.status(400).send("No Data found for this Enrollment !" );
   }
 
-  const getStudentRecord = {
-    name: studentsData.name,
-    fathername: studentsData.fathername,
-    email: studentsData.email,
-    semester: studentsData.semester,
-    enrollment: studentsData.enrollment,
-    course: studentsData.course,
-    branch:studentsData.branch,
-    mobile: studentsData.mobile,
-    college: studentsData.college,
-    subject01: studentsData.subject01,
-    subject02: studentsData.subject02,
-    subject03: studentsData.subject03,
-    subject04: studentsData.subject04,
-    subject05: studentsData.subject05,
-    marks01: studentsData.marks01,
-    marks02: studentsData.marks02,
-    marks03: studentsData.marks03,
-    marks04: studentsData.marks04,
-    marks05: studentsData.marks05,
-  };
+  // const getStudentRecord = {
+  //   /// name: studentsData.name,
+  //   fathername: studentsData.fathername,
+  //   email: studentsData.email,
+  //   semester: studentsData.semester,
+  //   enrollment: studentsData.enrollment,
+  //   course: studentsData.course,
+  //   branch:studentsData.branch,
+  //   mobile: studentsData.mobile,
+  //   college: studentsData.college,
+  //   subject01: studentsData.subject01,
+  //   subject02: studentsData.subject02,
+  //   subject03: studentsData.subject03,
+  //   subject04: studentsData.subject04,
+  //   subject05: studentsData.subject05,
+  //   marks01: studentsData.marks01,
+  //   marks02: studentsData.marks02,
+  //   marks03: studentsData.marks03,
+  //   marks04: studentsData.marks04,
+  //   marks05: studentsData.marks05,
+  // };
 
   res.status(200).send({
     status: 200,
-    message: ` ${studentsData.name} Record Updated Successfully !`,
-    user: getStudentRecord,
+    success : true,
+    message: `Enrollment Record Fetch Successfully !`,
+    user: studentsData,
   });
+
+}
+catch( error ){
+  console.log( error )
+}
 
 }
